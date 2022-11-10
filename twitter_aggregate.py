@@ -12,35 +12,41 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
 # ツイート取得
-SEARCH_KEYWORD = "#漫画がよめるハッシュタグ -filter:retweets"
-tweet_objects = api.search_tweets(q=SEARCH_KEYWORD,result_type="recent",count=100)
+SEARCH_KEYWORD = "#漫画が読めるハッシュタグ -filter:retweets"
+TWEET_COUNT = 500
+TWEET_MODE = "extended"
+LIKES_COUNTS = 1000
+tweet_objects = tweepy.Cursor(api.search_tweets, q=SEARCH_KEYWORD, tweet_mode=TWEET_MODE).items(TWEET_COUNT)
+
+
 
 # ツイートソート
-LIKES_COUNTS = 500
+sortedResults = {}
 
-tweetids_with_more_than_thousand_likes = []
-accounts_with_more_than_thousand_likes = []
+def sortTweetMoreThanHundred(tweet_objects):
 
+    current_max_fav = 0
 
-def sortTweet(tweet_objects):
     """
-    リツイート,メンションを除く
-    1000以上のいいねがついたuser,idを返却
+    1000以上かつ最大のツイートを返却
     """
     for tweet in tweet_objects:
 
-        if tweet.favorite_count <= LIKES_COUNTS:
+        if tweet.favorite_count <= LIKES_COUNTS: 
             continue
 
-        tweetids_with_more_than_thousand_likes.append(tweet.id)
-        accounts_with_more_than_thousand_likes.append(tweet.user.screen_name)
+        key = tweet.user.screen_name
+        
+        if key not in sortedResults and tweet.favorite_count >= current_max_fav:
 
-    return [accounts_with_more_than_thousand_likes,tweetids_with_more_than_thousand_likes]
+            sortedResults[key] = tweet.id
+            current_max_fav = tweet.favorite_count
 
-accounts,tweetids= sortTweet(tweet_objects)
+    return sortedResults
 
-print(accounts)
-print(tweetids)
+result= sortTweetMoreThanHundred(tweet_objects)
+
+print(result)
 
 
 
