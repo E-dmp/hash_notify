@@ -23,12 +23,13 @@ tweet_objects = tweepy.Cursor(api.search_tweets, q=SEARCH_KEYWORD, tweet_mode=TW
 # ツイートソート
 sortedResults = {}
 
-def sortTweetMoreThanHundred(tweet_objects):
+def sort_tweet_more_than_thousand(tweet_objects):
 
     current_max_fav = 0
 
     """
     1000以上かつ最大のツイートを返却
+    return dict
     """
     for tweet in tweet_objects:
 
@@ -44,7 +45,7 @@ def sortTweetMoreThanHundred(tweet_objects):
 
     return sortedResults
 
-result= sortTweetMoreThanHundred(tweet_objects)
+result= sort_tweet_more_than_thousand(tweet_objects)
 
 print(result)
 
