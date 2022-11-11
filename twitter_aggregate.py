@@ -17,10 +17,10 @@ SEARCH_KEYWORD = "#漫画が読めるハッシュタグ -filter:retweets"
 TWEET_COUNT = 1000
 TWEET_MODE = "extended"
 LIKES_COUNTS = 1000
-tweet_objects = tweepy.Cursor(api.search_tweets, q=SEARCH_KEYWORD, tweet_mode=TWEET_MODE).items(TWEET_COUNT)
+tweet_objects = tweepy.Cursor(api.search_tweets, q=SEARCH_KEYWORD,tweet_mode=TWEET_MODE).items(TWEET_COUNT)
+
 
 # ツイートソート
-
 def sort_tweet_more_than_thousand(tweet_objects):
 
     sortedResults = []
@@ -39,13 +39,12 @@ def sort_tweet_more_than_thousand(tweet_objects):
             sortedResults.append(tweet.user.screen_name)
             sortedResults.append(tweet.id)
             current_max_fav = tweet.favorite_count
-
+            
     return sortedResults
 
 
 
 result= sort_tweet_more_than_thousand(tweet_objects)
-print(result)
 user_name,tweet_id = result if result != [] else [None,None]
 
 # LINE の接続
