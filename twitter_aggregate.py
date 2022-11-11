@@ -21,26 +21,24 @@ tweet_objects = tweepy.Cursor(api.search_tweets, q=SEARCH_KEYWORD, tweet_mode=TW
 
 
 # ツイートソート
-sortedResults = {}
 
 def sort_tweet_more_than_thousand(tweet_objects):
 
+    sortedResults = []
     current_max_fav = 0
 
     """
     1000以上かつ最大のツイートを返却
-    return dict
+    return list
     """
     for tweet in tweet_objects:
 
         if tweet.favorite_count <= LIKES_COUNTS: 
-            continue
+            continue        
+        elif tweet.user.screen_name not in sortedResults and tweet.favorite_count >= current_max_fav:
 
-        key = tweet.user.screen_name
-        
-        if key not in sortedResults and tweet.favorite_count >= current_max_fav:
-
-            sortedResults[key] = tweet.id
+            sortedResults.append(tweet.user.screen_name)
+            sortedResults.append(tweet.id)
             current_max_fav = tweet.favorite_count
 
     return sortedResults
