@@ -43,7 +43,6 @@ def sort_tweet_more_than_thousand(tweet_objects):
     return sortedResults
 
 
-
 result= sort_tweet_more_than_thousand(tweet_objects)
 user_name,tweet_id = result if result != [] else [None,None]
 
